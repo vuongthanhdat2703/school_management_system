@@ -37,6 +37,7 @@ function Header() {
       default:
         return <Dashboard setCurrentTab={setCurrentTab}/>
     }
+    
   }
   return (
     <div className='Page'>
