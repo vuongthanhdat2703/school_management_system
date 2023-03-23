@@ -32,19 +32,17 @@ function Header() {
         return <Notification />
       case "homepage":
         return <Homepage />
-
-
+        
       default:
         return <Dashboard setCurrentTab={setCurrentTab}/>
     }
-    
   }
   return (
     <div className='Page'>
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-3">
-            <div className='Navigation-left'>
+            <div className='navigation-left'>
               <div className="logo">
                 <h2>Dashboard</h2>
                 <hr />
@@ -64,7 +62,7 @@ function Header() {
                     )}
 
                   </li>
-                  <li><a href='/#'><i><FontAwesomeIcon icon={faRightFromBracket} /></i>LogOut</a></li>
+                  <li><a href='/login'><i><FontAwesomeIcon icon={faRightFromBracket} /></i>LogOut</a></li>
                 </ul>
               </div>
             </div>

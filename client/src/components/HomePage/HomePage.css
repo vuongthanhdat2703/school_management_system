@@ -1,6 +1,6 @@
 .important {
   margin-top: 15px;
-  background-color: #fff;
+  background-color: var(--white);
   padding: 20px;
   border-radius: 5px;
 }

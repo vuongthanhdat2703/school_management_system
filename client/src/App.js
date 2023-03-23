@@ -1,6 +1,5 @@
 import Auth from './pages/Auth/login';
 import {Route, BrowserRouter as Router,Routes}from 'react-router-dom';
-import Dashboard from './components/Dashboard/Dashboard';
 import Home from './pages/Home/Home'
 import './index.css'
 import 'react-calendar/dist/Calendar.css';

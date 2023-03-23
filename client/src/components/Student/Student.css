@@ -2,7 +2,7 @@
 .student-form {
 
     margin-top: 15px;
-    background-color: #fff;
+    background-color: var(--white);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -40,7 +40,7 @@
   
   .student-form button {
     background-color: #0077cc;
-    color: #fff;
+    color: var(--white);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -57,7 +57,7 @@
 .student-table{
   margin-top: 20px;
 
-  background-color: #fff;
+  background-color: var(--white);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -80,9 +80,12 @@
   }
   .student-table .delete-btn {
     background-color: #f44336;
+    border-radius: 5px;
+    border: 1px solid #f44336;
   }
   
   .student-table .edit-btn {
     background-color: #008CBA;
     margin-right: 10px;
+    border: 1px solid #008CBA;
   }

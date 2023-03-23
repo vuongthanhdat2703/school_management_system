@@ -1,16 +1,16 @@
 
-
 html {
     height: 100%;
   }
   body {
     margin:0;
     padding:0;
-    font-family: sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     /* background: linear-gradient(#141e30, #243b55); */
     background: rgb(233, 233, 233);
+    --gray : rgb(43, 46, 54);
+    --white : rgb(255, 255, 255);
   }
-
   .react-calendar {
     border: 1px solid white !important;
     width: 350px;
@@ -18,3 +18,5 @@ html {
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.125em;
   }
+  
+ 
