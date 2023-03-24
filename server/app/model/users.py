@@ -1,6 +1,9 @@
 from sqlalchemy import Column, String, Enum, Integer, Text, ForeignKey
 from sqlalchemy.orm import backref, relationship
 from app.model import Base
+from app.model.students import Students
+from app.model.departments import Departments
+
 
 
 class Users(Base):
@@ -12,8 +15,8 @@ class Users(Base):
     email = Column(String(255))
     phone = Column(Text(11))
     account = relationship("Account", back_populates="users")
-    # student = relationship("Students", back_populates="users")
-    # departments = relationship("Departments", back_populates="users")
+    students = relationship("Students", back_populates="users")
+    departments = relationship("Departments", back_populates="users")
 
     def __init__(self, id, account_id, lastName, firstName, email, phone):
         self.id = id
