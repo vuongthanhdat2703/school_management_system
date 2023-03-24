@@ -1,15 +1,15 @@
 from flask import Blueprint, jsonify, request
+from app import conn
 from app.model.account import Account
 from app.model.users import Users
-from app import conn
 import jwt
 
 
-acc = Blueprint('accountController',__name__)
+api_account = Blueprint('accountController',__name__)
 session = conn.Session()
 
 # Login and set token
-@acc.route('/login', methods =['POST'])
+@api_account.route('/login', methods =['POST'])
 def check_acc():
     data = request.get_json()
     username = data['username']
@@ -25,7 +25,7 @@ def check_acc():
     
 
 
-@acc.route('/get', methods =['GET'])
+@api_account.route('/get', methods =['GET'])
 def get_users():
     users_db = session.query(Users).all()
 
