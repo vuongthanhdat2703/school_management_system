@@ -19,10 +19,23 @@ def check_acc():
         payload = {'role': user.role}
         secret_key = 'secret_key'
         token = jwt.encode(payload, secret_key, algorithm='HS256')
-        return jsonify({'message': 'Login success!', 'token': token.format('utf-8')})
+        response = jsonify({'message': 'Login success!'})
+        response.set_cookie('token', token.encode("utf-8"), httponly=True, secure=True)
+        return response
     else:
         return jsonify({'message': 'Invalid username or password'})
-    
+
+@api_account.route('/add_account', methods = ['POST'])
+def add_account():
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+    role = data['role']
+    new_account = Account(username=username, password=password, role=role)
+    session.add(new_account)
+    session.commit()
+
+    return jsonify({'message': 'Add account success!', 'account': new_account.to_json()})
 
 
 @api_account.route('/get', methods =['GET'])

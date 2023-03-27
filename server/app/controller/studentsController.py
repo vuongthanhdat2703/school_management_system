@@ -24,5 +24,5 @@ def get_students():
 
     return jsonify(students_list)
 
-# @api_students.route("/add_students", methods = ["POST"])
-# def add_students()
+# @api_students.route("/add_students/<int:account_id>", methods = ["POST"])
+# def add_students(account_id):
