@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app import conn
 from app.model.account import Account
 from app.model.users import Users
+from app.model.role import Role
 import jwt
 
 
@@ -25,21 +26,24 @@ def check_acc():
     else:
         return jsonify({'message': 'Invalid username or password'})
 
-@api_account.route('/add_account', methods = ['POST'])
-def add_account():
+# CREATE ACCOUNT
+@api_account.route('/add_account/<int:role>', methods = ['POST'])
+def add_account(role):
     data = request.get_json()
     username = data['username']
     password = data['password']
-    role = data['role']
-    new_account = Account(username=username, password=password, role=role)
-    check_user = session.query(Account).filter(Account.username == username).first()
-    if(check_user):
-        return jsonify({'message': 'Username already exists'})
+    role_check = session.query(Role).filter(Role.id == role).first()
+    if role_check is None:
+        return jsonify({'message': 'Role does not exist'})
     else:
-        session.add(new_account)
-        session.commit()
-
-        return jsonify({'message': 'Add account success!', 'account': new_account.to_json()})
+        new_account = Account(username=username, password=password, role_id=role)
+        check_user = session.query(Account).filter(Account.username == username).first()
+        if(check_user):
+            return jsonify({'message': 'Username already exists'})
+        else:
+            session.add(new_account)
+            session.commit()
+            return jsonify({'message': 'Add account success!', 'account': new_account.to_json()})
 
 
 @api_account.route('/get', methods =['GET'])

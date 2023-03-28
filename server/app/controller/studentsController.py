@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
 from app import conn
+import base64
 from app.model.students import Students
 from app.model.users import Users
+from app.model.account import Account
 
 
-api_students = Blueprint('accountController',__name__)
+api_students = Blueprint('studentsController',__name__)
 session = conn.Session()
 
 @api_students.route("/get_students", methods = ["GET"])
@@ -15,8 +17,8 @@ def get_students():
     for students in students_db:
         students_dict = {
             'id': students.id,
-            'id_users': Users.to_json(students.id_users),
-            'image': students.image,
+            'id_users': Users.to_json(students.user_id),
+            'images': students.images,
             'gender': students.gender,
             'birthDay': students.birthDay
         }
@@ -32,16 +34,21 @@ def add_students(account_id):
     email = data['email']
     phone = data['phone']
 
-    images = data['images']
+    images = data['images'] + "=" * ((4 - len(data['images']) % 4) % 4)
+    images = base64.b64decode(images.encode('utf-8'))
     gender = data['gender']
     birthDay = data['birthDay']
+    check_account = session.query(Account.id == account_id)
+    if check_account:
+        user = Users(account_id=account_id, lastName=lastName, firstName=firstName, email=email, phone=phone)
+        session.add(user)
+        session.commit()
 
-    user = Users(account_id=account_id, lastName=lastName, firstName=firstName, email=email, phone=phone)
-    session.add(user)
-    session.commit()
+        students = Students(user_id=user.id, images=images, gender=gender, birthDay=birthDay)
+        session.add(students)
+        session.commit()
 
-    students = Students(user_id=user.id, image=images, gender=gender, birthDay=birthDay)
-    session.add(students)
-    session.commit()
+        return jsonify({'message': 'Students added successfully'})
+    else:
+        return jsonify({'message': 'User does not exist'})
 
-    return jsonify({'message': 'Students added successfully'})
