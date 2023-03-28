@@ -24,5 +24,24 @@ def get_students():
 
     return jsonify(students_list)
 
-# @api_students.route("/add_students/<int:account_id>", methods = ["POST"])
-# def add_students(account_id):
+@api_students.route("/add_students/<int:account_id>", methods = ["POST"])
+def add_students(account_id):
+    data = request.get_json()
+    lastName = data['lastName']
+    firstName = data['firstName']
+    email = data['email']
+    phone = data['phone']
+
+    images = data['images']
+    gender = data['gender']
+    birthDay = data['birthDay']
+
+    user = Users(account_id=account_id, lastName=lastName, firstName=firstName, email=email, phone=phone)
+    session.add(user)
+    session.commit()
+
+    students = Students(user_id=user.id, image=images, gender=gender, birthDay=birthDay)
+    session.add(students)
+    session.commit()
+
+    return jsonify({'message': 'Students added successfully'})

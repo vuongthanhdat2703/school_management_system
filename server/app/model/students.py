@@ -4,7 +4,7 @@ from app.model import Base
 
 class Students(Base):
     __tablename__ = 'students_table'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(ForeignKey("users_table.id"))
     image = Column(BLOB)
     gender = Column(Integer)

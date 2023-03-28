@@ -5,7 +5,7 @@ from app.model import Base
 
 class Departments(Base):
     __tablename__ = 'departments_table'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(ForeignKey("users_table.id"))
     departments_name = Column(String(255))
     start_day = Column(Date)

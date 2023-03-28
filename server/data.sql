@@ -37,7 +37,7 @@ CREATE TABLE `account_table` (
 
 LOCK TABLES `account_table` WRITE;
 /*!40000 ALTER TABLE `account_table` DISABLE KEYS */;
-INSERT INTO `account_table` VALUES (1,'nguyena','12345','Admin'),(2,'nguyenb','1234ss5','Admin');
+INSERT INTO `account_table` VALUES (1,'nguyena','12345','Admin');
 /*!40000 ALTER TABLE `account_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,12 +50,12 @@ DROP TABLE IF EXISTS `departments_table`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `departments_table` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `users_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `departments_name` varchar(255) NOT NULL,
-  `start_day` date NOT NULL,
+  `start_date` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `users_id_idx` (`users_id`),
-  CONSTRAINT `users_id` FOREIGN KEY (`users_id`) REFERENCES `users_table` (`id`)
+  KEY `users_id_idx` (`user_id`),
+  CONSTRAINT `users_id` FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -80,8 +80,8 @@ CREATE TABLE `notifications_table` (
   `department_id` int NOT NULL,
   `subject_id` int NOT NULL,
   `title` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
-  `create_date` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `department_notices_idx` (`department_id`),
   KEY `subject_notices_idx` (`subject_id`),
@@ -134,13 +134,13 @@ DROP TABLE IF EXISTS `students_table`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `students_table` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `users_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `images` blob NOT NULL,
   `gender` int NOT NULL,
   `birthDay` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `users_id_idx` (`users_id`),
-  CONSTRAINT `id_users` FOREIGN KEY (`users_id`) REFERENCES `users_table` (`id`)
+  KEY `users_id_idx` (`user_id`),
+  CONSTRAINT `id_users` FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -162,7 +162,7 @@ DROP TABLE IF EXISTS `subject_table`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subject_table` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `subject_name` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -215,4 +215,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-23 14:44:43
+-- Dump completed on 2023-03-27 15:02:12

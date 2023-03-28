@@ -32,10 +32,14 @@ def add_account():
     password = data['password']
     role = data['role']
     new_account = Account(username=username, password=password, role=role)
-    session.add(new_account)
-    session.commit()
+    check_user = session.query(Account).filter(Account.username == username).first()
+    if(check_user):
+        return jsonify({'message': 'Username already exists'})
+    else:
+        session.add(new_account)
+        session.commit()
 
-    return jsonify({'message': 'Add account success!', 'account': new_account.to_json()})
+        return jsonify({'message': 'Add account success!', 'account': new_account.to_json()})
 
 
 @api_account.route('/get', methods =['GET'])

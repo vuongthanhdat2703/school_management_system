@@ -9,12 +9,12 @@ from app.model.account import Account
 
 class Users(Base):
     __tablename__ = 'users_table'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     account_id = Column(ForeignKey("account_table.id"))
     lastName = Column(String(255))
     firstName = Column(String(255))
     email = Column(String(255))
-    phone = Column(Text(11))
+    phone = Column(Text(10))
     account = relationship(Account, back_populates="users")
     students = relationship(Students, back_populates="users")
     departments = relationship(Departments, back_populates="users")
