@@ -26,7 +26,7 @@ class Users(Base):
 
     def to_json(self):
         return {
-            'id': self.id,
+            'id': self.account_id,
             'lastName': self.lastName,
             'firstName': self.firstName,
             'email': self.email,

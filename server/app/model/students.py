@@ -21,7 +21,7 @@ class Students(Base):
 
     def to_json(self):
         return{
-            'id': self.id,
+            'id': self.user_id,
             'images': self.images,
             'gender': self.gender,
             'birthDay': self.birthDay

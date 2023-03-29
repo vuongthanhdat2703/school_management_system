@@ -20,7 +20,7 @@ def check_acc():
         payload = {'role': user.role_id}
         secret_key = 'secret_key'
         token = jwt.encode(payload, secret_key, algorithm='HS256')
-        response = jsonify({'message': 'Login success!'})
+        response = jsonify({'message': 'Login success!', "role": Role.to_json(user.role)})
         response.set_cookie('token', token.encode("utf-8"), httponly=True, secure=True)
         return response
     else:
