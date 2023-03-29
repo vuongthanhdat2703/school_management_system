@@ -46,19 +46,14 @@ def add_account(role):
             return jsonify({'message': 'Add account success!', 'account': new_account.to_json()})
 
 
-@api_account.route('/get', methods =['GET'])
+@api_account.route('/get_users', methods =['GET'])
 def get_users():
     users_db = session.query(Users).all()
 
     users_list = []
     for user in users_db:
         user_dict = {
-            'id': user.id,
-            'account': Account.to_json(user.account),
-            'lastName': user.lastName,
-            'firstName': user.firstName,
-            'email': user.email,
-            'phone': user.phone
+            'user': user.to_json()
         }
         users_list.append(user_dict)
 

@@ -1,9 +1,7 @@
 from sqlalchemy import Column, String, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from app.model import Base
-from app.model.departments import Departments
-
-
+from app.model.account import Account
 
 class Users(Base):
     __tablename__ = 'users_table'
@@ -15,7 +13,7 @@ class Users(Base):
     phone = Column(Text(10))
     account = relationship("Account", back_populates="users")
     students = relationship("Students", back_populates="users")
-    departments = relationship(Departments, back_populates="users")
+    departments = relationship("Departments", back_populates="users")
 
     def __init__(self, account_id, lastName, firstName, email, phone):
         self.account_id = account_id
@@ -26,7 +24,7 @@ class Users(Base):
 
     def to_json(self):
         return {
-            'id': self.account_id,
+            'account_id': Account.to_json(self.account),
             'lastName': self.lastName,
             'firstName': self.firstName,
             'email': self.email,

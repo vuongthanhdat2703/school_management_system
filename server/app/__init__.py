@@ -1,5 +1,5 @@
 from flask import Flask
-from app.controller import accountController, studentsController, departmentsController
+from app.controller import *
 from flask_cors import CORS
 
 app = Flask(__name__)

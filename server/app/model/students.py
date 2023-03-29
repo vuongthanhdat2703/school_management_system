@@ -1,8 +1,7 @@
 from sqlalchemy import Column, String, Integer, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from app.model import Base
-
-import base64
+from app.model.users import Users
 
 class Students(Base):
     __tablename__ = 'students_table'
@@ -21,7 +20,7 @@ class Students(Base):
 
     def to_json(self):
         return{
-            'id': self.user_id,
+            'user_id': Users.to_json(self.users),
             'images': self.images,
             'gender': self.gender,
             'birthDay': self.birthDay

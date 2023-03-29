@@ -21,5 +21,5 @@ class Account(Base):
         return {
             'username': self.username,
             'password': self.password,
-            'role': self.role_id
+            'role': Role.to_json(self.role)
         }
