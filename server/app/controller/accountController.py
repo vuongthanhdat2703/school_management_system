@@ -6,7 +6,7 @@ from app.model.role import Role
 import jwt
 
 
-api_account = Blueprint('accountController',__name__)
+api_account = Blueprint('api_account',__name__)
 session = conn.Session()
 
 # Login and set token
@@ -17,7 +17,7 @@ def check_acc():
     password = data['password']
     user =session.query(Account).filter(Account.username == username, Account.password == password).first()
     if user:
-        payload = {'role': user.role}
+        payload = {'role': user.role_id}
         secret_key = 'secret_key'
         token = jwt.encode(payload, secret_key, algorithm='HS256')
         response = jsonify({'message': 'Login success!'})

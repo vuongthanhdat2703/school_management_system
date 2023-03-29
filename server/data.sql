@@ -26,9 +26,11 @@ CREATE TABLE `account_table` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('Admin','Students','Departments') NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `role_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `role_id_idx` (`role_id`),
+  CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role_table` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +39,7 @@ CREATE TABLE `account_table` (
 
 LOCK TABLES `account_table` WRITE;
 /*!40000 ALTER TABLE `account_table` DISABLE KEYS */;
-INSERT INTO `account_table` VALUES (1,'nguyena','12345','Admin');
+INSERT INTO `account_table` VALUES (6,'nguyena','12345',1),(7,'misapon','0112113aA',2);
 /*!40000 ALTER TABLE `account_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,6 +102,30 @@ LOCK TABLES `notifications_table` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `role_table`
+--
+
+DROP TABLE IF EXISTS `role_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role_table` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `role_table`
+--
+
+LOCK TABLES `role_table` WRITE;
+/*!40000 ALTER TABLE `role_table` DISABLE KEYS */;
+INSERT INTO `role_table` VALUES (1,'Admin'),(2,'Student'),(3,'Department');
+/*!40000 ALTER TABLE `role_table` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `student_deparment_table`
 --
 
@@ -135,13 +161,13 @@ DROP TABLE IF EXISTS `students_table`;
 CREATE TABLE `students_table` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `images` blob NOT NULL,
+  `images` varchar(50) NOT NULL,
   `gender` int NOT NULL,
   `birthDay` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `users_id_idx` (`user_id`),
   CONSTRAINT `id_users` FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,14 +212,14 @@ DROP TABLE IF EXISTS `users_table`;
 CREATE TABLE `users_table` (
   `id` int NOT NULL AUTO_INCREMENT,
   `account_id` int NOT NULL,
-  `lastName` varchar(255) NOT NULL,
-  `firstName` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` tinytext NOT NULL,
+  `lastName` varchar(50) NOT NULL,
+  `firstName` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `account_id_idx` (`account_id`),
   CONSTRAINT `account_id` FOREIGN KEY (`account_id`) REFERENCES `account_table` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,7 +228,6 @@ CREATE TABLE `users_table` (
 
 LOCK TABLES `users_table` WRITE;
 /*!40000 ALTER TABLE `users_table` DISABLE KEYS */;
-INSERT INTO `users_table` VALUES (1,1,'a','a','a','123456789');
 /*!40000 ALTER TABLE `users_table` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -215,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-27 15:02:12
+-- Dump completed on 2023-03-28 16:01:01

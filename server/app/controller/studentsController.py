@@ -1,12 +1,13 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, url_for
 from app import conn
-import base64
+from werkzeug.utils import secure_filename
+import os
 from app.model.students import Students
 from app.model.users import Users
-from app.model.account import Account
+import json
 
 
-api_students = Blueprint('studentsController',__name__)
+api_students = Blueprint('api_students',__name__)
 session = conn.Session()
 
 @api_students.route("/get_students", methods = ["GET"])
@@ -28,27 +29,29 @@ def get_students():
 
 @api_students.route("/add_students/<int:account_id>", methods = ["POST"])
 def add_students(account_id):
-    data = request.get_json()
-    lastName = data['lastName']
-    firstName = data['firstName']
-    email = data['email']
-    phone = data['phone']
+    student = json.loads(request.form["student"])
+    avatar = request.files["avatar"]
+    lastName = student['lastName']
+    firstName = student['firstName']
+    email = student['email']
+    phone = student['phone']
 
-    images = data['images'] + "=" * ((4 - len(data['images']) % 4) % 4)
-    images = base64.b64decode(images.encode('utf-8'))
-    gender = data['gender']
-    birthDay = data['birthDay']
-    check_account = session.query(Account.id == account_id)
-    if check_account:
-        user = Users(account_id=account_id, lastName=lastName, firstName=firstName, email=email, phone=phone)
-        session.add(user)
-        session.commit()
+    filename = secure_filename(avatar.filename)
+    if not os.path.exists('static/images'):
+        os.makedirs('static/images')
+    avatar.save(os.path.join('static', 'images', filename))
+    images = url_for('static', filename=filename)
 
-        students = Students(user_id=user.id, images=images, gender=gender, birthDay=birthDay)
-        session.add(students)
-        session.commit()
+    gender = student['gender']
+    birthDay = student['birthDay']
+    check_user = session.query(Users).filter(Users.account_id == account_id).first()
+    if check_user:
+        return jsonify({'message': 'User already exists'})
+    user = Users(account_id=account_id, lastName=lastName, firstName=firstName, email=email, phone=phone)
+    session.add(user)
+    session.commit()
 
-        return jsonify({'message': 'Students added successfully'})
-    else:
-        return jsonify({'message': 'User does not exist'})
-
+    students = Students(user_id=user.id, images=images, gender=gender, birthDay=birthDay)
+    session.add(students)
+    session.commit()
+    return jsonify({'message': 'Students added successfully'})
