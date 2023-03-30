@@ -9,6 +9,7 @@ import Homepage from '../../components/HomePage/HomePage';
 import Department from '../../components/Department/Department';
 import Notification from '../../components/Notification/Notification';
 import Student from '../../components/Student/Student';
+import Department_Noti from '../../components/Department_Noti/Department_Noti';
 
 function Header() {
 
@@ -20,21 +21,23 @@ function Header() {
   const renderTab = () => {
     switch (currentTab) {
       case "dashboard":
-        return <Dashboard setCurrentTab={setCurrentTab} /> 
+        return <Dashboard setCurrentTab={setCurrentTab} />
 
       case "subject":
         return < Subject />
       case "department":
-        return < Department/>
+        return < Department />
+      case "department_noti":
+        return < Department_Noti />
       case "student":
-        return <Student/>
+        return <Student />
       case "notification":
         return <Notification />
       case "homepage":
         return <Homepage />
-        
+
       default:
-        return <Dashboard setCurrentTab={setCurrentTab}/>
+        return <Dashboard setCurrentTab={setCurrentTab} />
     }
   }
   return (
@@ -55,7 +58,7 @@ function Header() {
                   <li className='drowdown' onClick={toggling}><a><i><FontAwesomeIcon icon={faBars} /></i>Classification Of Notification</a>
                     {isOpen && (
                       <ul className='drowdown-m' >
-                        <li onClick={() => setCurrentTab("department")}><a><i><FontAwesomeIcon icon={faUserGroup} /></i>Department</a></li>
+                        <li onClick={() => setCurrentTab("department_noti")}><a><i><FontAwesomeIcon icon={faUserGroup} /></i>Department</a></li>
                         <li onClick={() => setCurrentTab("subject")}><a><i><FontAwesomeIcon icon={faBook} /></i>Subject</a></li>
                         <li onClick={() => setCurrentTab("notification")}><a><i><FontAwesomeIcon icon={faBell} /></i>All Notification</a></li>
                       </ul>

@@ -1,24 +1,18 @@
 
 import './login.css'
 import React, { useState } from 'react';
-import axios from 'axios'
+import { Navigate as Redirect } from "react-router-dom"
 
 function Login() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false)
   const [error, setError] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username || !password) {
-      setError("Vui lòng nhập đầy đủ thông tin")
-    }
-    else if (username != "admin" || password != "123456") {
-      setError("Thông tin không chính xác")
-    }
-    else {
-      setError('')
-      alert("Đăng nhập thành công")
+      setError("Please enter full information")
     }
     const response = await fetch('http://localhost:8000/api/login', {
       method: 'POST',
@@ -28,10 +22,14 @@ function Login() {
       body: JSON.stringify({ username, password })
     });
     const data = await response.json();
-    console.log(data);
-  };
-
-
+    if (data.message === 'Login success!')
+    setRedirect(true)
+  else
+    setRedirect(false)
+};
+if (redirect) {
+  return <Redirect  to="/home" />
+}
 
   return (
     <>

@@ -19,9 +19,6 @@ function Dashboard(props) {
     <div className='statistics'>
       <div className="container-fluid">
         <div className="row">
-          <div className="header-dashboard">
-            <h2>Dash</h2>
-          </div>
           <div className="col-sm-3 student">
             <div className="student-1">
               <div className="icon">
