@@ -24,7 +24,7 @@ function Notification() {
                 <p class="post-category">[Department]/</p>
                 <p class="post-time">Posting time(12/03/2023) </p>
               </div>
-
+ 
               <div className="line"></div>
               <div class="post-header">
                 <h2 class="post-title">How to Build a Website</h2>
