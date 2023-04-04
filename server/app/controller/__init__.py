@@ -1,0 +1,1 @@
+from app.controller import accountController, departmentsController, studentsController
