@@ -1,14 +1,13 @@
+import os
 from flask import Blueprint, jsonify, request, url_for
 from app import conn
-from werkzeug.utils import secure_filename
-import os
-from app.model.students import Students
-from app.model.users import Users
+from app.service.studentService import StudentService, Students , Users
 import json
 
 
 api_students = Blueprint('api_students',__name__)
 session = conn.Session()
+student_service = StudentService(session)
 
 @api_students.route("/get_students", methods = ["GET"])
 def get_students():
@@ -41,27 +40,18 @@ def add_students(account_id):
     if check_user:
         return jsonify({'message': 'User already exists'})
     
-    # add users
     student = json.loads(request.form["student"])
     lastName = student['lastName']
     firstName = student['firstName']
     email = student['email']
     phone = student['phone']
-
-    user = Users(account_id=account_id, lastName=lastName, firstName=firstName, email=email, phone=phone)
-    session.add(user)
-    session.commit()
-    # add students
     avatar = request.files["avatar"]
-    filename = secure_filename(avatar.filename)
-    if not os.path.exists('app/static/images'):
-        os.makedirs('app/static/images')
-    avatar.save(os.path.join('app', 'static', 'images', filename))
-    images = url_for('static', filename=filename)
+    # avatar.save(os.path.join('app', 'static', 'images', "x.png"))
     gender = student['gender']
     birthDay = student['birthDay']
-
-    students = Students(user_id=user.id, images=images, gender=gender, birthDay=birthDay)
-    session.add(students)
-    session.commit()
-    return jsonify({'message': 'Students added successfully'})
+    try:
+        student_service.add_student(account_id, lastName, firstName, email, phone, avatar, gender, birthDay)
+        response = jsonify({'message': 'Students added successfully'})
+        return response
+    except ValueError as e:
+        return jsonify({'message': str(e)})

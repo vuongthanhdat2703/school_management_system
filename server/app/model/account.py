@@ -10,13 +10,14 @@ class Account(Base):
     password = Column(String(255))
     role_id = Column(ForeignKey("role_table.id"))
     users = relationship("Users", back_populates="account")
-    role = relationship(Role, back_populates="account")
+    role = relationship("Role", back_populates="account")
 
     def __init__(self, username, password, role_id):
         self.username = username
         self.password = password
         self.role_id = role_id
 
+    
     def to_json(self):
         return {
             'username': self.username,
