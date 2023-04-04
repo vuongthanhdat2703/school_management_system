@@ -35,6 +35,7 @@ function Notification() {
           <p>{post.content}</p>
         </div>
         <div className="post-footer">
+          
           <p className='post-category'>{post.category}</p>
           <p className="post-time">Posting time({post.time})</p>
         </div>
