@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, jsonify, request, url_for
 from app import conn
-from app.service.studentService import StudentService, Students , Users
+from app.service.studentService import StudentService, Student , Users
 import json
 
 
@@ -9,9 +9,15 @@ api_students = Blueprint('api_students',__name__)
 session = conn.Session()
 student_service = StudentService(session)
 
+@api_students.route("/delete_student/<int:student_id>", methods = ["POST"])
+def delete_student(student_id):
+    student_service.delete_student(student_id)
+    response = jsonify({'message': 'Students deleted successfully'})
+    return response
+
 @api_students.route("/get_students", methods = ["GET"])
 def get_students():
-    students_db = session.query(Students).all()
+    students_db = session.query(Student).all()
 
     students_list = []
     for students in students_db:
@@ -24,7 +30,7 @@ def get_students():
 
 @api_students.route("/get_student_byID/<int:user_id>", methods = ["GET"])
 def get_student_byID(user_id):
-    student_db = session.query(Students).filter(Students.user_id == user_id).all()
+    student_db = session.query(Student).filter(Student.user_id == user_id).all()
     students_list = []
     for student in student_db:
         students_dict = {
@@ -55,3 +61,15 @@ def add_students(account_id):
         return response
     except ValueError as e:
         return jsonify({'message': str(e)})
+    
+@api_students.route('/manager/<int:student_id>', methods = ["POST"])
+def add_students_manager(student_id):
+    data = request.get_json()
+    department_id = data['department_id']
+    try:
+        manage = student_service.add_manager(department_id, student_id)
+        response = jsonify({'message': 'Students added successfully', "student": manage.to_json()})
+        return response
+    except ValueError as e:
+        return jsonify({'message': str(e)})
+

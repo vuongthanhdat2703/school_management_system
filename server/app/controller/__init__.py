@@ -1,1 +1,1 @@
-from app.controller import accountController, departmentsController, studentsController
+from app.controller import accountController, departmentsController, studentsController, notificationController

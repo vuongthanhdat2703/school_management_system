@@ -1,3 +1,4 @@
+from flask import jsonify
 from app.model.account import Account
 import re
 from unidecode import unidecode
@@ -8,15 +9,19 @@ class AccountService():
         self.session = session
 
     def check_account(self, username, password):
+        check_username = self.session.query(Account).filter(Account.username == username).first()
+        check_password = self.session.query(Account).filter(Account.password == password).first()
         user = self.session.query(Account).filter(Account.username == username, Account.password == password).first()
-        if not user:
-            raise ValueError('Incorrect account or password')
+        if not check_username:
+            raise ValueError('Incorrect account')
+        elif not check_password:
+            raise ValueError('Incorrect password')
         return user
     
 
 
     def valid_user(self, username):
-        if len(username) < 6:
+        if len(username) < 6: 
             raise ValueError('username must be more than 6 characters')
         
         if not re.match('^[a-zA-Z0-9_]+$', username):
@@ -33,9 +38,9 @@ class AccountService():
         RoleService(self.session).check_role(role)
         self.valid_user(username)
         self.valid_password(password)
-        check_account = self.check_account(username, password)
-        if check_account != None:
-            raise ValueError('Username already exists')
+        check_account = self.session.query(Account).filter(Account.username == username, Account.password == password).first()
+        if check_account:
+            raise ValueError('Account already exists')
         new_account = Account(username, password, role)
         self.session.add(new_account)
         self.session.commit()
