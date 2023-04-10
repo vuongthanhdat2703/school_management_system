@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from app.model import Base
 from app.model.departments import Department
 from app.model.subject import Subject
+
 class Notification(Base):
     __tablename__ = 'notifications_table'
     id = Column(Integer, primary_key=True, autoincrement=True)

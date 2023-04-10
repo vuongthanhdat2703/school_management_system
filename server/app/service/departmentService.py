@@ -1,4 +1,6 @@
 from app.model.departments import Department, Users
+from app.service.accountService import AccountService
+from app.service.manageService import ManageService
 from app.service.userService import UserService
 
 class DepartmentService():
@@ -16,3 +18,11 @@ class DepartmentService():
         except Exception as e:
             self.session.rollback()
             raise e
+        
+    def delete_department(self, id):
+        ManageService(self.session).delete_manage(id)
+        department = self.session.query(Department).filter(Department.id == id).first()
+        self.session.delete(department)
+        self.session.commit()
+        user = UserService(self.session).delete_user(department.user_id)
+        AccountService(self.session).delete_account(user.account_id)

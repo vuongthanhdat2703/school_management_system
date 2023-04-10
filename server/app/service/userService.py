@@ -11,6 +11,12 @@ class UserService():
         self.session.add(new_user)
         self.session.commit()
         return new_user
+    
+    def delete_user(self, id):
+        user = self.session.query(Users).filter(Users.id == id).first()
+        self.session.delete(user)
+        self.session.commit()
+        return user
 
     def valid_user(self, lastName, firstName, email, phone):
         self.validate_name(lastName)

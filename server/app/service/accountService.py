@@ -8,6 +8,11 @@ class AccountService():
     def __init__(self, session):
         self.session = session
 
+    def delete_account(self, id):
+        account = self.session.query(Account).filter(Account.id == id).first()
+        self.session.delete(account)
+        self.session.commit()
+
     def check_account(self, username, password):
         check_username = self.session.query(Account).filter(Account.username == username).first()
         check_password = self.session.query(Account).filter(Account.password == password).first()
@@ -17,8 +22,18 @@ class AccountService():
         elif not check_password:
             raise ValueError('Incorrect password')
         return user
-    
 
+    def create_account(self, username, password, role):
+        RoleService(self.session).check_role(role)
+        self.valid_user(username)
+        self.valid_password(password)
+        check_account = self.session.query(Account).filter(Account.username == username, Account.password == password).first()
+        if check_account:
+            raise ValueError('Account already exists')
+        new_account = Account(username, password, role)
+        self.session.add(new_account)
+        self.session.commit()
+        return new_account
 
     def valid_user(self, username):
         if len(username) < 6: 
@@ -33,15 +48,3 @@ class AccountService():
     def valid_password(self, password):
         if len(password) < 6 or len(password) > 10:
             raise ValueError('Password must be from 6 - 10')
-
-    def create_account(self, username, password, role):
-        RoleService(self.session).check_role(role)
-        self.valid_user(username)
-        self.valid_password(password)
-        check_account = self.session.query(Account).filter(Account.username == username, Account.password == password).first()
-        if check_account:
-            raise ValueError('Account already exists')
-        new_account = Account(username, password, role)
-        self.session.add(new_account)
-        self.session.commit()
-        return new_account

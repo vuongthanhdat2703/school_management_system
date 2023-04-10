@@ -1,46 +1,56 @@
 from app.model.students import Student, Users
 from app.model.account import Account
-from app.model.students_department import Students_Department
 from werkzeug.utils import secure_filename
 from flask import url_for
 import os
 from PIL import Image
+from app.service.manageService import ManageService
 from app.service.userService import UserService
+from app.service.accountService import AccountService
 
 class StudentService():
     def __init__(self, session):
         self.session = session
 
-    def delete_student(self, student_id):
-        manage_db = self.session.query(Students_Department).filter(Students_Department.student_id == student_id).all()
-        for manage in manage_db:
-            self.session.delete(manage)
-        student = self.session.query(Student).filter(Student.id == student_id).first()
+    def get_all(self):
+        db = self.session.query(Student).all()
+        list_db = []
+        for student in db:
+            student_dict = {
+            'subject': student.to_json()
+            }
+            list_db.append(student_dict)
+        return list_db
+    
+    def get_by_id(self, user_id):
+        db = self.session.query(Student).filter(Student.user_id == user_id).all()
+        list_db = []
+        for student in db:
+            students_dict = {
+                'student': student.to_json()
+            }
+            list_db.append(students_dict)
+        return list_db
+
+    def delete_student(self, id):
+        ManageService(self.session).delete_manage(id)
+        student = self.session.query(Student).filter(Student.id == id).first()
         self.session.delete(student)
-        user = self.session.query(Users).filter(Users.id == student.user_id).first()
-        self.session.delete(user)
-        account = self.session.query(Account).filter(Account.id == user.account_id).first()
-        self.session.delete(account)
         self.session.commit()
+        user = UserService(self.session).delete_user(student.user_id)
+        AccountService(self.session).delete_account(user.account_id)
 
     def add_student(self, account_id, lastName, firstName, email, phone, avatar, gender, birthDay):
         try:
             UserService(self.session).valid_user(lastName, firstName, email, phone)
             url_avatar = self.valid_image(avatar)
-            user = UserService.add_user(account_id, lastName, firstName, email, phone)
+            user = UserService(self.session).add_user(account_id, lastName, firstName, email, phone)
             new_student = Student(user.id, url_avatar, gender, birthDay)
             self.session.add(new_student)
             self.session.commit()
         except Exception as e:
             self.session.rollback()
             raise e
-    
-    def add_manager(self, department_id, student_id):
-        self.valid_manage(department_id, student_id)
-        manager = Students_Department(department_id, student_id)
-        self.session.add(manager)
-        self.session.commit()
-        return manager
 
     def valid_image(self, avatar):
         if not self.is_valid_image(avatar):
@@ -59,8 +69,3 @@ class StudentService():
             return True
         except:
             return False
-    
-    def valid_manage(self, department_id, student_id):
-        check = self.session.query(Students_Department).filter(Students_Department.department_id == department_id, Students_Department.student_id == student_id).first()
-        if check:
-            raise ValueError('Already exist')
