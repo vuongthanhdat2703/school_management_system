@@ -1,7 +1,7 @@
 import React from 'react';
-import './Subject.css';
+import './Department_Noti.css';
 
-function Subject() {
+function Department_Noti() {
 
   const posts = [
     {
@@ -21,8 +21,8 @@ function Subject() {
     }
   ];
   return (
-    <div className='subject-noti'>
-    <h1>Subject Notification</h1>
+    <div className='department-noti'>
+    <h1>Department Notification</h1>
     {posts.map((post, index) => (
       <div key={index}>
         <div className="post-header">
@@ -41,4 +41,4 @@ function Subject() {
   );
 }
 
-export default Subject;
+export default Department_Noti;

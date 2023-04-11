@@ -1,37 +1,44 @@
-.Page{
+.Page {
   height: 100vh;
 }
-.Navigation-left{
-    border: 1px solid rgb(43, 46, 54);
-    background-color: rgb(43, 46, 54);
-    margin: 15px;
-    border-radius: 10px;
-    color: rgb(217, 215, 215);
-    height: calc(100vh - 30px);
-}   
-.logo{
-    font-size: 24px;
-    text-align: center;
-    margin-top: 15px;
+
+.navigation-left {
+  border: 1px solid var(--gray);
+  background-color: var(--gray);
+  /* margin: 15px 0; */
+  border-radius: 5px;
+  color: rgb(217, 215, 215);
+  height: calc(100vh - 0px);
+
 }
-hr{
+
+.navigation-left .logo {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+hr {
   width: 70%;
   margin-left: auto;
   margin-right: auto;
   border: 0.5px solid rgb(186, 186, 186);
 }
 
-.category{
-    margin: 10px 10px;
+.category {
+  margin: 10px 10px;
 }
+
 .category ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.category ul li a{
-    color: rgb(217, 215, 215);
+
+.category ul li a {
+  color: rgb(217, 215, 215);
 }
+
 .category li a {
   display: block;
   color: #000;
@@ -41,55 +48,34 @@ hr{
 
 .category li a.active {
   background-color: #04AA6D;
-  color: white;
+  color: var(--white);
 }
 
 .category li a:hover:not(.active) {
   background-color: #555;
-  color: white;
+  color: var(--white);
   border-radius: 5px;
 
 }
-.category ul li a i{
-  margin: 0px 10px 0  ;
-  
+
+.category ul li a i {
+  margin: 0px 10px 0;
+
 }
+
 .drowdown {
   color: rgb(217, 215, 215);
 
 }
 
-.category .drowdown-m li{
+.category .drowdown-m li {
   list-style: none;
   margin-left: 8px;
 }
-.category .drowdown-m{
+
+.category .drowdown-m {
   padding: 0;
   margin: 0;
-  color: #ffffff;
+  color: var(--white);
   font-weight: 500;
-}
-
-
-
-
-.category li.drowdown-subm {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  display: none;
-}
-
-.category li .drowdown-m:hover > .drowdown-subm {
-  display: block;
-}
-
-.category li .drowdown-m > a:after {
-  content: "▼";
-  margin-left: 5px;
-}
-
-.category li .drowdown-subm > a:before {
-  content: "→";
-  margin-right: 5px;
 }

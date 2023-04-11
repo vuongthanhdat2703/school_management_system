@@ -1,6 +1,10 @@
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
+<<<<<<< HEAD
 from app.model import Base
+=======
+from app.model import *
+>>>>>>> 128b4bb376302ccfc164e13f20fca6fd0f5f8f0f
 
 class Role(Base):
     __tablename__ = 'role_table'
