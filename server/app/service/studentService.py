@@ -44,24 +44,19 @@ class StudentService():
             self.session.rollback()
             raise e
         
-    def update_students(self, id, lastName=None, firstName=None, email=None, phone=None):
-            user = self.session.query(Users).filter(Users.id == id).first()
-            if not user:
-                raise ValueError("Invalid user ID")
-            if lastName:
-                self.validate_name(lastName)
-                user.lastName = lastName
-            if firstName:
-                self.validate_name(firstName)
-                user.firstName = firstName
-            if email:
-                self.validate_email(email)
-                user.email = email
-            if phone:
-                self.validate_phone_number(phone)
-                user.phone = phone
+    def update_students(self, id, lastName=None, firstName=None, email=None, phone=None, avatar=None, gender=None, birthDay=None):
+            update_student = self.session.query(Student).filter(Student.id == id).first()
+            UserService(self.session).update_user(update_student.user_id, lastName, firstName, email, phone)
+            if not update_student:
+                raise ValueError("Invalid student ID")
+            if avatar:
+                update_student.images = avatar
+            if gender:
+                update_student.gender = gender
+            if birthDay:
+                update_student.birthDay = birthDay
             self.session.commit()
-            return user
+            return update_student
     
     def delete_student(self, id):
         student = self.session.query(Student).filter(Student.id == id).first()

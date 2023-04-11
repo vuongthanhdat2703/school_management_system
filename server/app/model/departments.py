@@ -20,6 +20,7 @@ class Department(Base):
 
     def to_json(self):
         return{
+            'id': self.id,
             'user': Users.to_json(self.user),
             'departments_name': self.departments_name,
             'start_date': self.start_date

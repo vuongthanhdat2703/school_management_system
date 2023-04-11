@@ -18,6 +18,24 @@ class UserService():
         self.session.delete(user)
         self.session.commit()
         return user
+    
+    def update_user(self, id, lastName=None, firstName=None, email=None, phone=None):
+        user = self.session.query(Users).filter(Users.id == id).first()
+        if not user:
+            raise ValueError("Invalid user ID")
+        if lastName:
+            self.validate_name(lastName)
+            user.lastName = lastName
+        if firstName:
+            self.validate_name(firstName)
+            user.firstName = firstName
+        if email:
+            self.validate_email(email)
+            user.email = email
+        if phone:
+            self.validate_phone_number(phone)
+            user.phone = phone
+        return user
 
     def valid_user(self, account_id, lastName, firstName, email, phone):
         AccountService(self.session).check_id(account_id)

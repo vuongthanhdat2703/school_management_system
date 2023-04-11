@@ -54,18 +54,39 @@ class StudentController():
             response = jsonify({'message': 'Students deleted successfully'})
             return response
         
+        @self.api_students.route("/delete_selected_student", methods=["POST"])
+        def delete_selected_student():
+            try:
+                data = request.get_json()
+                selected_students = data["selected_students"]
+                for student_id in selected_students:
+                    print(student_id)
+                    self.student_service.delete_student(student_id)
+                return {"message": "Selected student have been deleted."}
+            except Exception as e:
+                print(str(e))
+                return {"error": "Failed to delete selected student."}
+        
         @self.api_students.route("/update_student/<int:id>", methods = ["POST"])
         def update_student(id):
             try:
-                data = request.json
-                last_name = data["lastName"]
-                first_name = data["firstName"]
-                email = data["email"]
-                phone = data["phone"]
-
+                student = json.loads(request.form["student"])
+                lastName = student['lastName']
+                firstName = student['firstName']
+                email = student['email']
+                phone = student['phone']
+                avatar = request.files["avatar"]
+                gender = student['gender']
+                birthDay = student['birthDay']
+                if avatar:
+                    fileName = secure_filename(str(id) + '_avatar.jpg')
+                    if not os.path.exists('app/static/images/students'):
+                        os.makedirs('app/static/images/students')
+                    avatar.save(os.path.join('app', 'static', 'images', 'students', fileName))
+                    url_avatar = os.path.join('app', 'static', 'images', 'students', fileName)
                 # update profile student
-                self.student_service.update_students(id, last_name, first_name, email, phone)
-                return {"message": "Update student successfully"}
+                update_student = self.student_service.update_students(id, lastName, firstName, email, phone, url_avatar, gender, birthDay)
+                return {"message": "Update student successfully", "student": update_student.to_json()}
             except ValueError as e:
                 return {"error": str(e)}
             except Exception as e:
