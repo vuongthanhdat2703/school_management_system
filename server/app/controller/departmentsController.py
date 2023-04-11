@@ -38,7 +38,7 @@ class DepartmentController():
             except ValueError as e:
                 return jsonify({'message': str(e)})
             
-        @self.api_departments.route("/update_department/<int:id>", methods = ["POST"])
+        @self.api_departments.route("/update_department/<int:id>", methods = ["PUT"])
         def update_department(id):
             try:
                 department = json.loads(request.form["department"])

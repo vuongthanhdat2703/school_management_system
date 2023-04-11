@@ -48,13 +48,13 @@ class StudentController():
             except ValueError as e:
                 return jsonify({'message': str(e)})
             
-        @self.api_students.route("/delete_student/<int:id>", methods = ["POST"])
+        @self.api_students.route("/delete_student/<int:id>", methods = ["DELETE"])
         def delete_student(id):
             self.student_service.delete_student(id)
             response = jsonify({'message': 'Students deleted successfully'})
             return response
         
-        @self.api_students.route("/delete_selected_student", methods=["POST"])
+        @self.api_students.route("/delete_selected_student", methods=["DELETE"])
         def delete_selected_student():
             try:
                 data = request.get_json()
@@ -67,7 +67,7 @@ class StudentController():
                 print(str(e))
                 return {"error": "Failed to delete selected student."}
         
-        @self.api_students.route("/update_student/<int:id>", methods = ["POST"])
+        @self.api_students.route("/update_student/<int:id>", methods = ["PUT"])
         def update_student(id):
             try:
                 student = json.loads(request.form["student"])
