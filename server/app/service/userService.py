@@ -1,6 +1,7 @@
 import re
 from unidecode import unidecode
 from app.model.users import Users
+from app.service.accountService import AccountService
 
 class UserService():
     def __init__(self, session):
@@ -18,7 +19,8 @@ class UserService():
         self.session.commit()
         return user
 
-    def valid_user(self, lastName, firstName, email, phone):
+    def valid_user(self, account_id, lastName, firstName, email, phone):
+        AccountService(self.session).check_id(account_id)
         self.validate_name(lastName)
         self.validate_name(firstName)
         self.validate_email(email)

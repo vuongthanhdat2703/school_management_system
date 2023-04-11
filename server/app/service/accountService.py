@@ -48,3 +48,8 @@ class AccountService():
     def valid_password(self, password):
         if len(password) < 6 or len(password) > 10:
             raise ValueError('Password must be from 6 - 10')
+    
+    def check_id(self, id):
+        check = self.session.query(Account).filter(Account.id == id).first()
+        if not check:
+            raise ValueError('Account does not exist')
