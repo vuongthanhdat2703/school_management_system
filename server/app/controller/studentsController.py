@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app import conn
-from app.service.studentService import StudentService, Student , Users
+from app.service.studentService import StudentService, Users
 import json
 
 class StudentController():
@@ -46,4 +46,3 @@ class StudentController():
                 return response
             except ValueError as e:
                 return jsonify({'message': str(e)})
-

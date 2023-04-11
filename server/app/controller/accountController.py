@@ -40,4 +40,3 @@ class AccountController():
                 return response
             except ValueError as e:
                 return jsonify({'message': str(e)})
-

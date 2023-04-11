@@ -15,7 +15,6 @@ class DepartmentController():
             if check_user:
                 return jsonify({'message': 'User already exists'})
             department = json.loads(request.form["department"])
-            # return jsonify({'a': department})
             lastName = department['lastName']
             firstName = department['firstName']
             email = department['email']

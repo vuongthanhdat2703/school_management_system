@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from app import conn
-import json
 from app.service.subjectService import SubjectService
 
 class SubjectController():
