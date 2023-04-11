@@ -1,6 +1,7 @@
 import React from 'react'
 import './Student.css'
 import { useState } from 'react';
+import { request } from '../../utils/request';
 
 const userss = [
   {
@@ -23,37 +24,71 @@ const userss = [
 ];
 
 function Student() {
-  const [lastname, setLastname] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [gender, setGender] = useState('male');
-  const [birthDay, setBirthDay] = useState('');
-  const [users, setUsers] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted');
-    console.log(lastname, firstname, email, phone, gender, birthDay);
-  };
-  const handleDelete = (index) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      const newUsers = [...users];
-      newUsers.splice(index, 1);
-      setUsers(newUsers);
-    }
-  };
-  const handleEdit = (index) => {
-    // setEditing(true);
-    // setCurrentUser(index);
-    setFirstname(users[index].firstname);
-    setLastname(users[index].lastname);
-    setEmail(users[index].email);
-    setPhone(users[index].phone);
-    setGender(users[index].gender);
-    setBirthDay(users[index].data_of_birth);
+  const [students, setStudents] = useState([]);
+  const [newStudent, setNewStudent] = useState({
+    lastName: '',
+    firstName: '',
+    email: '',
+    phone: '',
+    avatar: null,
+    gender: '',
+    birthDay: ''
+  });
+// get student data
+  useEffect(() => {
+    request.get('/api/get_students')
+      .then(res => {
+        setStudents(res.data);
+      })
+  }, []);
+// Event handler
+  const handleInputChange = (event) => {
+    setNewStudent({ ...newStudent, [event.target.name]: event.target.value });
   };
 
+  const handleFileChange = (event) => {
+    setNewStudent({ ...newStudent, avatar: event.target.files[0] });
+  };
+// data processing
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('student', JSON.stringify(newStudent));
+    formData.append('avatar', newStudent.avatar);
+    request.post(`/api/add_students/${account_id}`, formData)
+      .then(res => {
+        console.log(res.data);
+        setNewStudent({
+          lastName: '',
+          firstName: '',
+          email: '',
+          phone: '',
+          avatar: null,
+          gender: '',
+          birthDay: ''
+        });
+        setStudents([...students, res.data.student]);
+      })
+
+  };
+//student data deletion function
+  const handleDelete = (id) => {
+    request.post(`/api/delete_student/${id}`)
+      .then(res => {
+        console.log(res.data);
+        setStudents(students.filter(student => student.id !== id));
+      })
+
+  };
+// Student data editing function
+  const handleUpdate = (id, data) => {
+    request.post(`/api/update_student/${id}`, data)
+      .then(res => {
+        console.log(res.data);
+        setStudents(students.map(student => student.id === id ? { ...student, ...data } : student));
+      })
+  };
   return (
     <>
       <div className='student-form'>
@@ -70,8 +105,8 @@ function Student() {
                     type="text"
                     id="lastname"
                     name="lastname"
-                    value={lastname}
-                    onChange={(e) => setLastname(e.target.value)}
+                    value={newStudent.lastName}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
@@ -81,21 +116,16 @@ function Student() {
                     type="text"
                     id="firstname"
                     name="firstname"
-                    value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
+                    value={newStudent.firstName}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
                 <div>
                   <label htmlFor="gender">Gender</label>
-                  <select
-                    id="gender"
-                    name="gender"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                  >
-                    <option value="internet">Male</option>
-                    <option value="female">Female</option>
+                  <select>
+                    <input type="radio" name="gender" value="male" checked={newStudent.gender === 'male'} onChange={handleInputChange} /> Male
+                    <input type="radio" name="gender" value="female" checked={newStudent.gender === 'female'} onChange={handleInputChange} /> Female
                   </select>
                 </div>
               </div>
@@ -106,8 +136,8 @@ function Student() {
                     type="email"
                     id="email"
                     name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={newStudent.email}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
@@ -117,8 +147,8 @@ function Student() {
                     type="tel"
                     id="phone"
                     name="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    value={newStudent.phone}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
@@ -128,8 +158,8 @@ function Student() {
                     type="date"
                     id="birthDay"
                     name="birthDay"
-                    value={birthDay}
-                    onChange={(e) => setBirthDay(e.target.value)}
+                    value={newStudent.birthDay}
+                    onChange={handleInputChange}
                     required
                   />
                 </div>
@@ -158,19 +188,20 @@ function Student() {
                 </tr>
               </thead>
               <tbody>
-                {userss.map((user, index) => (
-                  <tr key={index}>
-                    <td>{user.lastname}</td>
-                    <td>{user.firstname}</td>
-                    <td>{user.email}</td>
-                    <td>{user.phone}</td>
-                    <td>{user.gender}</td>
-                    <td>{user.data_of_birth}</td>
+                {students.map((student) => (
+                  <tr key={student.id}>
+                    <td>{student.lastname}</td>
+                    <td>{student.firstname}</td>
+                    <td>{student.email}</td>
+                    <td>{student.phone}</td>
+                    <td>{student.gender}</td>
+                    <td>{student.birthDay}</td>
                     <td>
-                      <button className='edit-btn' onClick={() => handleEdit(index)}>Edit</button>
-                      <button className='delete-btn' onClick={() => handleDelete(index)}>Delete</button>
+                      <button className='delete-btn' onClick={() => handleDelete(student.id)}>Delete</button>
+                      <button className='edit-btn' onClick={() => handleUpdate(student)}>Edit</button>
                     </td>
                   </tr>
+                  
                 ))}
               </tbody>
             </table>
