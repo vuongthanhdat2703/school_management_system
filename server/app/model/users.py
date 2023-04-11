@@ -7,13 +7,13 @@ class Users(Base):
     __tablename__ = 'users_table'
     id = Column(Integer, primary_key=True, autoincrement=True)
     account_id = Column(ForeignKey("account_table.id"))
+    account = relationship("Account", back_populates="users")
     lastName = Column(String(50))
     firstName = Column(String(50))
     email = Column(String(50))
     phone = Column(Text(10))
-    account = relationship("Account", back_populates="users")
-    students = relationship("Students", back_populates="users")
-    departments = relationship("Departments", back_populates="users")
+    student = relationship("Student", back_populates="user")
+    department = relationship("Department", back_populates="user")
 
     def __init__(self, account_id, lastName, firstName, email, phone):
         self.account_id = account_id
@@ -24,7 +24,7 @@ class Users(Base):
 
     def to_json(self):
         return {
-            'account_id': Account.to_json(self.account),
+            'account': Account.to_json(self.account),
             'lastName': self.lastName,
             'firstName': self.firstName,
             'email': self.email,

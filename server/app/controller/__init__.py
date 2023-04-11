@@ -1,1 +1,6 @@
-from app.controller import accountController, departmentsController, studentsController
+from app.controller.notificationController import NotificationController
+from app.controller.accountController import AccountController
+from app.controller.departmentsController import DepartmentController
+from app.controller.subjectController import SubjectController
+from app.controller.manageController import ManageController
+from app.controller.studentsController import StudentController
