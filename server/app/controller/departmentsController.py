@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import json
 from flask import Blueprint, jsonify, request
 from app import conn
@@ -57,16 +56,3 @@ class DepartmentController():
             except Exception as e:
                 print(str(e))
                 return {"error": "Failed to update department"}
-=======
-from flask import Blueprint, jsonify, request, url_for
-from app import conn
-from app.model.departments import Departments
-from app.model.users import Users
-from app.model.account import Account
-
-api_departments = Blueprint('api_departments',__name__)
-session = conn.Session()
-
-# @api_departments.route("/add_department/<int:account_id>", methods = ["POST"])
-# def add_department(account_id):
->>>>>>> 128b4bb376302ccfc164e13f20fca6fd0f5f8f0f
