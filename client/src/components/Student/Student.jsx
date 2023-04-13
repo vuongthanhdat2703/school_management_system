@@ -1,32 +1,13 @@
 import React from 'react'
 import './Student.css'
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { request } from '../../utils/request';
 
-const userss = [
-  {
-    firstname: 'John',
-    lastname: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '555-1234',
-    gender: 'female',
-    data_of_birth: '2022-02-01'
-  },
-  {
-    firstname: 'Jane',
-    lastname: 'Doe',
-    email: 'jane.doe@example.com',
-    phone: '555-5678',
-    gender: 'male',
-    data_of_birth: '2022-02-01'
-  },
-  // ...
-];
 
 function Student() {
 
   const [students, setStudents] = useState([]);
-  const [newStudent, setNewStudent] = useState({
+  const [studentData, setStudentData] = useState({
     lastName: '',
     firstName: '',
     email: '',
@@ -37,44 +18,67 @@ function Student() {
   });
 // get student data
   useEffect(() => {
-    request.get('/api/get_students')
+    request.get('/get_students')
       .then(res => {
         setStudents(res.data);
       })
   }, []);
 // Event handler
   const handleInputChange = (event) => {
-    setNewStudent({ ...newStudent, [event.target.name]: event.target.value });
+    const {name, value} = event.target;
+    setStudentData({ ...studentData, [name]: value });
   };
 
-  const handleFileChange = (event) => {
-    setNewStudent({ ...newStudent, avatar: event.target.files[0] });
-  };
+  // const handleFileChange = (event) => {
+  //   setNewStudent({ ...newStudent, avatar: event.target.files[0] });
+  // };
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [editingIndex, setEditingIndex] = useState(null);
+
+//   const handleEdit = (index) => {
+//     const classEdit = students[index];
+//     setStudentData(classEdit);
+//     setIsEditing(true);
+//     setEditingIndex(index);
+// };
 // data processing
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('student', JSON.stringify(newStudent));
-    formData.append('avatar', newStudent.avatar);
-    request.post(`/api/add_students/${account_id}`, formData)
-      .then(res => {
-        console.log(res.data);
-        setNewStudent({
-          lastName: '',
-          firstName: '',
-          email: '',
-          phone: '',
-          avatar: null,
-          gender: '',
-          birthDay: ''
-        });
-        setStudents([...students, res.data.student]);
-      })
-
-  };
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+//     if(isEditing){
+//       const formData = new FormData();
+//       formData.append('student', JSON.stringify(studentData));
+//       formData.append('avatar', studentData.avatar);
+//       request.post(`/add_students/${account_id}`, formData)
+//         .then(res => {
+//           const newStudent = [...students];
+//           newStudent [editingIndex] =res.data;
+//           setStudents(newStudent);
+//           setIsEditing(false);
+//           setEditingIndex(null);
+//           setStudentData({
+//             lastName: '',
+//             firstName: '',
+//             email: '',
+//             phone: '',
+//             avatar: null,
+//             gender: '',
+//             birthDay: ''
+//           });
+//           setStudents([...students, res.data.student]);
+//         })
+  
+//     }else{
+//       request.post(`/update_student/${id}`, data)
+//       .then(res => {
+//         console.log(res.data);
+//         setStudents(students.map(student => student.id === id ? { ...student, ...data } : student));
+//       })
+//   }
+// };
+    
 //student data deletion function
   const handleDelete = (id) => {
-    request.post(`/api/delete_student/${id}`)
+    request.post(`/delete_student/${id}`)
       .then(res => {
         console.log(res.data);
         setStudents(students.filter(student => student.id !== id));
@@ -82,13 +86,7 @@ function Student() {
 
   };
 // Student data editing function
-  const handleUpdate = (id, data) => {
-    request.post(`/api/update_student/${id}`, data)
-      .then(res => {
-        console.log(res.data);
-        setStudents(students.map(student => student.id === id ? { ...student, ...data } : student));
-      })
-  };
+  
   return (
     <>
       <div className='student-form'>
@@ -97,7 +95,7 @@ function Student() {
             <h2>Student Form</h2>
           </div>
           <div className="row">
-            <form onSubmit={handleSubmit}>
+            <form >
               <div className="header-form">
                 <div>
                   <label htmlFor="lastname">Last Name:</label>
@@ -105,7 +103,7 @@ function Student() {
                     type="text"
                     id="lastname"
                     name="lastname"
-                    value={newStudent.lastName}
+                    value={studentData.lastName}
                     onChange={handleInputChange}
                     required
                   />
@@ -116,7 +114,7 @@ function Student() {
                     type="text"
                     id="firstname"
                     name="firstname"
-                    value={newStudent.firstName}
+                    value={studentData.firstName}
                     onChange={handleInputChange}
                     required
                   />
@@ -124,8 +122,8 @@ function Student() {
                 <div>
                   <label htmlFor="gender">Gender</label>
                   <select>
-                    <input type="radio" name="gender" value="male" checked={newStudent.gender === 'male'} onChange={handleInputChange} /> Male
-                    <input type="radio" name="gender" value="female" checked={newStudent.gender === 'female'} onChange={handleInputChange} /> Female
+                    <input type="radio" name="gender" value="male" checked={studentData.gender === 'male'} onChange={handleInputChange} /> Male
+                    <input type="radio" name="gender" value="female" checked={studentData.gender === 'female'} onChange={handleInputChange} /> Female
                   </select>
                 </div>
               </div>
@@ -136,7 +134,7 @@ function Student() {
                     type="email"
                     id="email"
                     name="email"
-                    value={newStudent.email}
+                    value={studentData.email}
                     onChange={handleInputChange}
                     required
                   />
@@ -147,7 +145,7 @@ function Student() {
                     type="tel"
                     id="phone"
                     name="phone"
-                    value={newStudent.phone}
+                    value={studentData.phone}
                     onChange={handleInputChange}
                     required
                   />
@@ -158,7 +156,7 @@ function Student() {
                     type="date"
                     id="birthDay"
                     name="birthDay"
-                    value={newStudent.birthDay}
+                    value={studentData.birthDay}
                     onChange={handleInputChange}
                     required
                   />
@@ -198,7 +196,10 @@ function Student() {
                     <td>{student.birthDay}</td>
                     <td>
                       <button className='delete-btn' onClick={() => handleDelete(student.id)}>Delete</button>
-                      <button className='edit-btn' onClick={() => handleUpdate(student)}>Edit</button>
+                      <button 
+                      className='edit-btn' 
+                      // onClick={() => handleUpdate(student)}
+                      >Edit</button>
                     </td>
                   </tr>
                   
