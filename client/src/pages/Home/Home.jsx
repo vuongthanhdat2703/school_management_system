@@ -10,6 +10,7 @@ import Department from '../../components/Department/Department';
 import Notification from '../../components/Notification/Notification';
 import Student from '../../components/Student/Student';
 import Department_Noti from '../../components/Department_Noti/Department_Noti';
+import Profile from '../../components/Profile/Profile';
 
 function Header() {
 
@@ -35,6 +36,8 @@ function Header() {
         return <Notification />
       case "homepage":
         return <Homepage />
+      case "profile":
+        return <Profile />
 
       default:
         return <Dashboard setCurrentTab={setCurrentTab} />
@@ -52,7 +55,7 @@ function Header() {
               </div>
               <div className="category">
                 <ul>
-                  <li ><a href='/#'><i><FontAwesomeIcon icon={faUser} /></i>Admin</a></li>
+                  <li ><a onClick={() => setCurrentTab("profile")}><i><FontAwesomeIcon icon={faUser} /></i>Admin</a></li>
                   <li onClick={() => setCurrentTab("dashboard")}><a ><i><FontAwesomeIcon icon={faGauge} /></i>Dashboard</a></li>
                   <li onClick={() => setCurrentTab("homepage")}><a><i><FontAwesomeIcon icon={faHome} /></i>Homepage</a></li>
                   <li className='drowdown' onClick={toggling}><a><i><FontAwesomeIcon icon={faBars} /></i>Classification Of Notification</a>
@@ -63,7 +66,6 @@ function Header() {
                         <li onClick={() => setCurrentTab("notification")}><a><i><FontAwesomeIcon icon={faBell} /></i>All Notification</a></li>
                       </ul>
                     )}
-
                   </li>
                   <li><a href='/login'><i><FontAwesomeIcon icon={faRightFromBracket} /></i>LogOut</a></li>
                 </ul>
