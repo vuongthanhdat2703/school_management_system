@@ -1,6 +1,5 @@
 from app.model.students_department import Students_Department
 
-
 class ManageService():
     def __init__(self, session):
         self.session = session

@@ -30,7 +30,7 @@ CREATE TABLE `account_table` (
   PRIMARY KEY (`id`),
   KEY `role_id_idx` (`role_id`),
   CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role_table` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `account_table` (
 
 LOCK TABLES `account_table` WRITE;
 /*!40000 ALTER TABLE `account_table` DISABLE KEYS */;
-INSERT INTO `account_table` VALUES (6,'nguyena','12345',1),(7,'misapon','0112113aA',2);
+INSERT INTO `account_table` VALUES (6,'nguyena','12345',1),(68,'khoacntt','0112113aA',3),(69,'khoaqtkd','0112113aA',3),(70,'khoagdmn','0112113aA',3),(71,'khoagdtc','0112113aA',3),(72,'khoaspt','0112113aA',3),(74,'misapon','0112113aA',2);
 /*!40000 ALTER TABLE `account_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `departments_table` (
   PRIMARY KEY (`id`),
   KEY `users_id_idx` (`user_id`),
   CONSTRAINT `users_id` FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,6 +67,7 @@ CREATE TABLE `departments_table` (
 
 LOCK TABLES `departments_table` WRITE;
 /*!40000 ALTER TABLE `departments_table` DISABLE KEYS */;
+INSERT INTO `departments_table` VALUES (5,66,'Công Nghệ Thông Tin','1997-11-25'),(6,67,'Quản Trị Kinh Doanh','1997-01-02'),(7,68,'Giáo Dục Mầm Non','1997-01-15'),(8,69,'Giáo Dục Thể Chất','1997-08-20'),(9,70,'Sư Phạm Toán','1989-08-11');
 /*!40000 ALTER TABLE `departments_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,6 +149,7 @@ CREATE TABLE `student_deparment_table` (
 
 LOCK TABLES `student_deparment_table` WRITE;
 /*!40000 ALTER TABLE `student_deparment_table` DISABLE KEYS */;
+INSERT INTO `student_deparment_table` VALUES (5,51),(6,51);
 /*!40000 ALTER TABLE `student_deparment_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,7 +169,7 @@ CREATE TABLE `students_table` (
   PRIMARY KEY (`id`),
   KEY `users_id_idx` (`user_id`),
   CONSTRAINT `id_users` FOREIGN KEY (`user_id`) REFERENCES `users_table` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,6 +178,7 @@ CREATE TABLE `students_table` (
 
 LOCK TABLES `students_table` WRITE;
 /*!40000 ALTER TABLE `students_table` DISABLE KEYS */;
+INSERT INTO `students_table` VALUES (51,73,'app\\static\\images\\students\\74_avatar.jpg',1,'2005-07-14');
 /*!40000 ALTER TABLE `students_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +193,7 @@ CREATE TABLE `subject_table` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,6 +202,7 @@ CREATE TABLE `subject_table` (
 
 LOCK TABLES `subject_table` WRITE;
 /*!40000 ALTER TABLE `subject_table` DISABLE KEYS */;
+INSERT INTO `subject_table` VALUES (1,'Học tập'),(2,'Sự kiện'),(3,'Học phí');
 /*!40000 ALTER TABLE `subject_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +223,7 @@ CREATE TABLE `users_table` (
   PRIMARY KEY (`id`),
   KEY `account_id_idx` (`account_id`),
   CONSTRAINT `account_id` FOREIGN KEY (`account_id`) REFERENCES `account_table` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,6 +232,7 @@ CREATE TABLE `users_table` (
 
 LOCK TABLES `users_table` WRITE;
 /*!40000 ALTER TABLE `users_table` DISABLE KEYS */;
+INSERT INTO `users_table` VALUES (66,68,'Mạnh','Lê','cntt@gmail.com','0398849060'),(67,69,'Toàn','Lê','qtkd@gmail.com','0398849060'),(68,70,'Quỳnh','Diễm','gdmn@gmail.com','0398849060'),(69,71,'Thiên','Tâm','gdmn@gmail.com','0398849060'),(70,72,'Ánh','Đức','spt@gmail.com','0398849060'),(73,74,'Trúc','Lê','nhoktruc@gmail.com','0398849060');
 /*!40000 ALTER TABLE `users_table` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -240,4 +245,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-28 16:01:01
+-- Dump completed on 2023-04-13 21:34:00

@@ -5,6 +5,7 @@ import json
 from werkzeug.utils import secure_filename
 from flask import url_for
 import os
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 class StudentController():
     def __init__(self):

@@ -6,7 +6,11 @@ from app.service.accountService import AccountService
 class UserService():
     def __init__(self, session):
         self.session = session
-        
+    
+    def get_by_account_id(self, account_id):
+        user = self.session.query(Users).filter(Users.account_id == account_id).first()
+        return user
+
     def add_user(self, account_id, lastName, firstName, email, phone):
         new_user = Users(account_id=account_id, lastName=lastName, firstName=firstName, email=email, phone=phone)
         self.session.add(new_user)

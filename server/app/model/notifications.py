@@ -24,6 +24,7 @@ class Notification(Base):
     
     def to_json(self):
         return{
+            'id': self.id,
             'department': Department.to_json(self.department),
             'subject': Subject.to_json(self.subject),
             'title': self.title,

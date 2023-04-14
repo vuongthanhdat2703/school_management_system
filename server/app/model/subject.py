@@ -12,5 +12,6 @@ class Subject(Base):
 
     def to_json(self):
         return {
+            'id': self.id,
             'name': self.name
         }
