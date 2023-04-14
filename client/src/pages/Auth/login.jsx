@@ -1,36 +1,38 @@
-
 import './login.css'
 import React, { useState } from 'react';
-import { Navigate as Redirect } from "react-router-dom"
-
+import { useNavigate } from "react-router-dom"
+import { request } from '../../utils/request';
+import cookie from 'cookie';
 function Login() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [redirect, setRedirect] = useState(false)
   const [error, setError] = useState('');
+  const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username || !password) {
       setError("Please enter full information")
     }
-    const response = await fetch('http://localhost:8000/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await response.json();
-    if (data.message === 'Login success!')
-    setRedirect(true)
-  else
-    setRedirect(false)
-};
-if (redirect) {
-  return <Redirect  to="/home" />
-}
 
+    try {
+      const response = await request.post('/login', { username, password });
+      const data = response.data;
+
+      if (data.message === 'Login success!') {
+        const tokenCookie = response.headers['set-cookie'][0]; // lấy cookie đầu tiên từ response header
+        const token = cookie.parse(tokenCookie).token; // parse cookie và lấy giá trị token
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', data.role);
+        navigate('/home');
+      } else {
+        setError(data.message);
+      }
+
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    }
+  };
   return (
     <>
       <div className='login-span'>
@@ -57,7 +59,7 @@ if (redirect) {
               />
               {error && <div>{error}</div>}
             </div>
-            <button className='button' type="submit"  >Submit</button>
+            <button className='button' type="submit" >Login</button>
           </form>
 
         </div>
