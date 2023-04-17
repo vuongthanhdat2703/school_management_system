@@ -1,14 +1,13 @@
-import './Student.css'
-import React, { useState, useEffect } from 'react';
-import { request } from '../../utils/request';
 import { message } from "antd";
+import React, { useEffect, useState } from 'react';
+import { request } from '../../utils/request';
+import './Student.css';
 
 
 function Student() {
-  const [students, setStudents] = useState([])
-  const [formDataStudent, setFormDataStudent] = useState({
+  const [students, setStudents] = useState([]);
+  const [formDataStudent, setFormDataStudent] = useState({});
 
-  });
 
 
   const handleChange = (event) => {
@@ -16,6 +15,7 @@ function Student() {
     const value = event.target.value;
     setFormDataStudent({ ...formDataStudent, [name]: value });
   };
+
 
   useEffect(() => {
     request.get("/get_students")
@@ -48,6 +48,9 @@ function Student() {
         })
     }
   };
+
+  console.log(students);
+
   return (
     <>
       <div className='student-form'>
@@ -127,6 +130,28 @@ function Student() {
                     required
                   />
                 </div>
+
+              </div>
+              <div className="footer-form">
+                <div className="mb-3">
+                  <label htmlFor="formFileMultiple" className="form-label">Avatar</label>
+                  <input className="form-control" type="file" id="formFileMultiple" multiple />
+                </div>
+                <div>
+                  <label htmlFor="departmentName">DepartmentName</label>
+                  <select
+                    id="departmentname"
+                    name="department_name"
+                    value={formDataStudent.department_name}
+                    onChange={handleChange}
+                  >
+                    <option value="Công Nghệ Thông Tin">Công Nghệ Thông Tin</option>
+                    <option value="Quản Trị Kinh Doanh">Quản Trị Kinh Doanh</option>
+                    <option value="Giáo Dục Mầm Non">Giáo Dục Mầm Non</option>
+                    <option value="Giáo Dục Thể Chất">Giáo Dục Thể Chất</option>
+                    <option value="Sư Phạm Toán">Sư Phạm Toán</option>
+                  </select>
+                </div>
               </div>
               <div>
                 <button type="submit">Submit</button>
@@ -141,33 +166,37 @@ function Student() {
           <div>
             <h2>Student List</h2>
           </div>
-          <div className="row">
+          <div className="row " style={{ maxHeight: "500px", overflowY: "scroll" }}>
             <table>
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Last Name</th>
-                  <th>First Name</th>
+                  <th>LastName</th>
+                  <th>FirstName</th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Gender</th>
                   <th>BirthDay</th>
+                  <th>Avatar</th>
+                  <th>DepartmentName</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {students.map((body) => (
-                  <tr key={body.id}>
-                    <td>{body.id}</td>
-                    <td>{body.lastname}</td>
-                    <td>{body.firstname}</td>
-                    <td>{body.email}</td>
-                    <td>{body.phone}</td>
-                    <td>{body.gender}</td>
-                    <td>{body.birthDay}</td>
+                {students.map((student, id) => (
+                  <tr key={id}>
+                    <td>{student.student.id}</td>
+                    <td>{student.student.user.lastName}</td>
+                    <td>{student.student.user.firstName}</td>
+                    <td>{student.student.user.email}</td>
+                    <td>{student.student.user.phone}</td>
+                    <td>{student.student.gender}</td>
+                    <td>{student.student.birthDay}</td>
+                    <td>{student.student.images}</td>
+                    <td>{student.department_name}</td>
                     <td>
-                      {/* <button className='edit-btn' onClick={() => handleEdit(index)}>Edit</button> */}
-                      <button className='delete-btn' onClick={() => handleDelete(body.id)}>Delete</button>
+                      <button className='edit-btn' onClick={() => setFormDataStudent(student)}>Edit</button>
+                      <button className='delete-btn' onClick={() => handleDelete(student.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}

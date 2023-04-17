@@ -1,43 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Subject.css';
 
 function Subject() {
 
-  const posts = [
-    {
-      title: "How to Build a Website",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ullamcorper erat. Aliquam at dui non nulla viverra dapibus. Donec tempor consequat nulla. Aliquam auctor, felis sit amet tristique fringilla, erat mi lobortis augue, sit amet vestibulum velit nibh sed tellus.",
-      time: "12/03/2023"
-    },
-    {
-      title: "ReactJS Tutorial",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ullamcorper erat. Aliquam at dui non nulla viverra dapibus. Donec tempor consequat nulla. Aliquam auctor, felis sit amet tristique fringilla, erat mi lobortis augue, sit amet vestibulum velit nibh sed tellus.",
-      time: "13/03/2023"
-    },
-    {
-      title: "JavaScript Basics",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ullamcorper erat. Aliquam at dui non nulla viverra dapibus. Donec tempor consequat nulla. Aliquam auctor, felis sit amet tristique fringilla, erat mi lobortis augue, sit amet vestibulum velit nibh sed tellus.",
-      time: "14/03/2023"
-    }
-  ];
+
+
+  const [formDataSuject, setFormDataSubject] = useState({
+
+  });
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setFormDataSubject({ ...formDataSuject, [name]: value });
+  };
   return (
-    <div className='subject-noti'>
-    <h1>Subject Notification</h1>
-    {posts.map((post, index) => (
-      <div key={index}>
-        <div className="post-header">
-          <h2 className="post-title">{post.title}</h2>
+    <>
+      <div className='subject-noti'>
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-4"><button type="button" class="btn btn-danger">Event</button></div>
+            <div className="col-sm-4"><button type="button" class="btn btn-warning">Schedule</button></div>
+            <div className="col-sm-4"><button type="button" class="btn btn-info">Tuition</button></div>
+          </div>
         </div>
-        <div className="post-content">
-          <p>{post.content}</p>
-        </div>
-        <div className="post-footer">
-          <p className="post-time">Posting time({post.time})</p>
-        </div>
-        {index !== posts.length - 1 && <div className="line"></div>}
+
+
+
       </div>
-    ))}
-  </div>
+    </>
   );
 }
 
