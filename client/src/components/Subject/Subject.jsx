@@ -1,34 +1,37 @@
-import React, { useState } from 'react';
-import './Subject.css';
+import React, { useEffect, useState } from "react";
+import AuthLayout from "../../layout/AuthLayout";
+import "./Subject.css";
+import { request } from "../../utils/request";
 
 function Subject() {
+  const [subjects, setSubjects] = useState([]);
 
+  const getSubjects = async () => {
+    await request.get('/get_all_subject').then((res) => {
+      setSubjects(res.data)
+    });
+  }
 
+  useEffect(() => {
+    getSubjects()
+  }, [])
 
-  const [formDataSuject, setFormDataSubject] = useState({
-
-  });
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setFormDataSubject({ ...formDataSuject, [name]: value });
-  };
   return (
-    <>
-      <div className='subject-noti'>
+    <AuthLayout>
+      <div className="subject-noti">
         <div className="container">
           <div className="row">
-            <div className="col-sm-4"><button type="button" class="btn btn-danger">Event</button></div>
-            <div className="col-sm-4"><button type="button" class="btn btn-warning">Schedule</button></div>
-            <div className="col-sm-4"><button type="button" class="btn btn-info">Tuition</button></div>
+            {subjects.map((subject) => (
+              <div className="col-sm-4" key={subject.subject?.id}>
+                <button type="button" className="btn btn-danger">
+                  {subject.subject?.name}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
-
-
-
       </div>
-    </>
+    </AuthLayout>
   );
 }
 

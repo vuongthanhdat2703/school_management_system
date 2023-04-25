@@ -3,6 +3,7 @@ import json
 from app import conn
 from app.service.departmentService import DepartmentService, Users
 from flask import Blueprint, Response, jsonify, request
+from app.service.userService import UserService
 
 
 class DepartmentController():
@@ -10,6 +11,14 @@ class DepartmentController():
         self.api_departments = Blueprint('api_departments', __name__)
         self.session = conn.Session()
         self.departmentService = DepartmentService(self.session)
+        self.user_service = UserService(self.session)
+
+        @self.api_departments.route("/get_department_byID_user/<int:id>", methods=["GET"])
+        def get_department_byID_user(id):
+            user = self.user_service.get_user_id(id)
+            deparment = self.departmentService.get_by_userID(user.id)
+            response = jsonify({"deparment": deparment.to_json()})
+            return response
 
         @self.api_departments.route("/get_departments", methods=["GET"])
         def get_students():
@@ -27,7 +36,7 @@ class DepartmentController():
                 Users.account_id == account_id).first()
             if check_user:
                 return Response(
-                    "The response body goes here",
+                    'The response body goes here',
                     status=400,
                 )
             department = json.loads(request.form["department"])
@@ -46,16 +55,18 @@ class DepartmentController():
             except ValueError as e:
                 return jsonify({'message': str(e)})
 
-        @self.api_departments.route("/update_department/<int:id>", methods=["PUT"])
+        @self.api_departments.route("/update_department/<int:id>", methods=["POST"])
         def update_department(id):
             try:
                 department = json.loads(request.form["department"])
+                print(str(department))
                 lastName = department['lastName']
                 firstName = department['firstName']
                 email = department['email']
                 phone = department['phone']
                 departments_name = department['departments_name']
                 start_date = department['start_date']
+
                 self.departmentService.update_departments(
                     id, lastName, firstName, email, phone, departments_name, start_date)
                 response = jsonify(
@@ -64,5 +75,10 @@ class DepartmentController():
             except ValueError as e:
                 return {"error": str(e)}
             except Exception as e:
-                print(str(e))
-                return {"error": "Failed to update department"}
+                return {"error": str(e)}
+
+        @self.api_departments.route("/delete_department/<int:id>", methods=["DELETE"])
+        def delete_department(id):
+            self.departmentService.delete_department(id)
+            response = jsonify({'message': 'Deparment deleted successfully'})
+            return response

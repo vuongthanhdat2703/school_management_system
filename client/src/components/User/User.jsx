@@ -1,6 +1,8 @@
+import { message } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { ROLES } from "../../constants/roles";
+import AuthLayout from "../../layout/AuthLayout";
 import { request } from "../../utils/request";
 import "./User.css";
 
@@ -14,6 +16,8 @@ function User() {
     const value = event.target.value;
     setFormDataUser({ ...formDataUser, [name]: value });
   };
+
+
   const handleSubmit = (e, role) => {
     e.preventDefault();
     request
@@ -22,10 +26,12 @@ function User() {
         console.log(res.data);
         setUser(res.data);
         if (formDataUser.role == ROLES.DEPARTMENT) {
-          navigate("/home/department/add", {
+          message.success("Create account department success!");
+          navigate("/home/department", {
             state: { id: res.data.account.id },
           });
         } else if (formDataUser.role == ROLES.STUDENT) {
+          message.success("Create account student success!");
           navigate("/home/student/add", {
             state: { id: res.data.account.id },
           });
@@ -33,14 +39,12 @@ function User() {
       });
   };
   return (
-    <>
+    <AuthLayout>
       <div className="department-form">
         <div className="container">
-          {/* {isAdmin && (
-            <div>
-              <h2>User Form</h2>
-            </div>
-          )} */}
+          <div>
+            <h2>User Form</h2>
+          </div>
           <div className="row">
             <form onSubmit={handleSubmit}>
               <div className="header-form">
@@ -56,7 +60,7 @@ function User() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="password">PassWord</label>
+                  <label htmlFor="password">Password</label>
                   <input
                     type="text"
                     id="password"
@@ -81,13 +85,13 @@ function User() {
                 </div>
               </div>
               <div>
-                <button type="submit">Submit</button>
+                <button type="submit">Create</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-    </>
+    </AuthLayout>
   );
 }
 

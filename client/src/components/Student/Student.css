@@ -92,6 +92,10 @@ td {
   background-color: #f44336;
   border-radius: 5px;
   border: 1px solid #f44336;
+  color: #ffffff;
+  padding: 3px 10px;
+  margin-top: 10px;
+
 }
 
 .student-table .edit-btn {
@@ -99,4 +103,15 @@ td {
   margin-right: 10px;
   border-radius: 5px;
   border: 1px solid #008CBA;
+  color: #ffffff;
+  padding: 3px 19px;
+}
+
+.student-table .delete-btn-all {
+  background-color: #f44336;
+  border-radius: 5px;
+  border: 1px solid #f44336;
+  color: #ffffff;
+  padding: 5px 10px;
+
 }

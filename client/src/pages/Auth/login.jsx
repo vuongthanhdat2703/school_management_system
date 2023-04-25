@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getToken } from "../../utils/localstorage";
-import { request } from "../../utils/request";
+import { AppContext } from "../../App";
 import "./login.css";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { handleLogin, setPassword, setUsername, username, password, user } =
+    useContext(AppContext);
 
   useEffect(() => {
-    const token = getToken();
-    if (token) {
+    if (user) {
       navigate("/home");
     }
-  }, []);
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,18 +21,7 @@ function Login() {
       setError("Please enter full information");
     }
 
-    try {
-      const response = await request.post("/login", { username, password });
-      const data = response.data;
-
-      if (data.message === "Login success!") {
-        navigate("/home");
-      } else {
-        setError(data.message);
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-    }
+    await handleLogin();
   };
   return (
     <>

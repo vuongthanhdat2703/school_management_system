@@ -1,3 +1,4 @@
 export const KEYS = {
-    ACCESS_TOKEN: 'accessToken'
+    TOKEN_ROLE: 'tokenRole',
+    USER: 'user'
 }
